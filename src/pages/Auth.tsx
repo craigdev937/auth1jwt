@@ -1,6 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { MDBInput } from "mdb-react-ui-kit";
+import { AuthAPI } from "../global/AuthAPI";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
     firstName: "",
@@ -11,13 +13,39 @@ const initialState = {
 };
 
 export const Auth = (): JSX.Element => {
+    const navigate = useNavigate();
     const [formValue, setFormValue] = React.useState(initialState);
     const [showRegister, setShowRegister] = React.useState(false);
-
     const { firstName, lastName, email, 
         password, confirmPassword } = formValue;
+
+    const [login, {
+        isSuccess: isLoginSuccess, 
+        isError: isLoginError, 
+        error: loginError, 
+        data: loginData
+    }] = AuthAPI.useLoginMutation();
     
-    const handleChange = () => {};
+    const handleChange = 
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFormValue({...formValue, 
+            [event.target.name]: event.target.value});
+    };
+
+    const handleLogin = async () => {
+        if (email && password) {
+            await login({email, password});
+        } else {
+            toast.error("Please fill all input fields.");
+        }
+    };
+
+    React.useEffect(() => {
+        if (isLoginSuccess) {
+            toast.success("User Login Successfully!");
+            navigate("/dashboard");
+        }
+    }, [isLoginSuccess]);
 
     return (
     <section className="vh-100 gradient-custom">
@@ -105,6 +133,7 @@ export const Auth = (): JSX.Element => {
                                         btn-outline-light 
                                         btn-lg px-5"
                                         type="button"
+                                        onClick={() => handleLogin()}
                                         >Login
                                     </button>
                                 ) : (
@@ -133,7 +162,7 @@ export const Auth = (): JSX.Element => {
                                             <p className="text-white-50 fw-bold"
                                                 style={{ cursor: "pointer" }}
                                                 onClick={() => setShowRegister(false)}>
-                                                Log in
+                                                Login
                                             </p>
                                         </>
                                     )}
