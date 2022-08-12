@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../global/Hooks";
 import { logout } from "../global/AuthSlice";
 import { toast } from "react-toastify";
 
-export const Dashboard = (): JSX.Element => {
+export const Dashboard = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { name } = useAppSelector((state: RootState) => state.auth);

@@ -81,6 +81,15 @@ export const Auth = (): JSX.Element => {
         };
     }, [isLoginSuccess, isRegisterSuccess]);
 
+    React.useEffect(() => {
+        if (isLoginError) {
+            toast.error((loginError as any).data.message)
+        };
+        if (isRegisterError) {
+            toast.error((registerError as any).data.message);
+        };
+    }, [isLoginError, isRegisterError]);
+
     return (
     <section className="vh-100 gradient-custom">
     <div className="container py-4 h-100">
