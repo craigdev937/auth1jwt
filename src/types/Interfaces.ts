@@ -3,9 +3,22 @@ export interface AuthState {
     token: string | null,
 };
 
-export interface IUser {
+export interface IAuth {
     name: string,
     token: string
 };
 
+export interface IUser {
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    password?: string,
+    confirmPassword?: string
+};
 
+
+// firstName: "",
+//     lastName: "",
+//     email: "",
+//     password: "",
+//     confirmPassword: ""

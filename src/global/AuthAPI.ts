@@ -1,4 +1,4 @@
-import { IUser } from "../types/Interfaces";
+import { IAuth, AuthState } from "../types/Interfaces";
 import { createApi, 
     fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -7,15 +7,33 @@ export const AuthAPI = createApi({
     reducerPath: "AuthAPI",
     baseQuery: fetchBaseQuery({ baseUrl: URL }),
     endpoints: (builder) => ({
-        login: builder.mutation<IUser, IUser>({
-            query: (payload) => {
+        login: builder.mutation({
+            query: (payload: {
+                email: string, 
+                password: string
+            }) => {
                 return {
                     url: "/users/signin",
                     method: "POST",
                     body: payload
                 }
             }
-        })
+        }),
+        register: builder.mutation({
+            query: (payload: {
+                firstName: string,
+                lastName: string,
+                email: string,
+                password: string,
+                confirmPassword: string
+            }) => {
+                return {
+                    url: "/users/signup",
+                    method: "POST",
+                    body: payload
+                }
+            },
+        }),
     }),
 });
 
